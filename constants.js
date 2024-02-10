@@ -3,4 +3,9 @@ const OPCODES = {
     OP_EQUAL: '87',
 };
 
-module.exports = { OPCODES };
+const VERSION_PREFIX = {
+    TESTNET_P2SH: '05',
+    MAINNET_P2SH: 'C4',
+}
+
+module.exports = { OPCODES, VERSION_PREFIX };

@@ -13,18 +13,18 @@ function ripemd160(input) {
     return hash.digest();
 }
 
-function sha256ThenRipemd160(input) {
+function createScriptHash(input) {
     const sha256Hash = sha256(input);
     const ripemd160Hash = ripemd160(sha256Hash);
     return ripemd160Hash;
 }
 
 function createP2SHScriptPubKey(input) {
-    const redeemScripthash = sha256ThenRipemd160(input);
+    const scriptHash = createScriptHash(input);
 
     const scriptPubKey = Buffer.concat([
         Buffer.from(OPCODES.OP_HASH160, 'hex'),
-        Buffer.from(redeemScripthash, 'hex'), 
+        Buffer.from(scriptHash, 'hex'), 
         Buffer.from(OPCODES.OP_EQUAL, 'hex')   
     ]);
 

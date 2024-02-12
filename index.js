@@ -55,9 +55,47 @@ function createP2shAddress(input) {
     return address;
 }
 
+function convertEndian(hexString) {
+    return hexString.match(/../g).reverse().join('');
+}
+
+function satoshiToLEHex(value) {
+    // Convert Satoshi value to hexadecimal
+    const hexValue = value.toString(16).padStart(16, '0');
+
+    // Reverse the byte order (little-endian)
+    const littleEndianHex = convertEndian(hexValue);
+
+    return littleEndianHex;
+}
+
+function createTransactionToSendToP2sh(scriptPubKey) {
+    const version = '02000000';
+
+    // input parameters
+    const inputCount = '01';
+    const utxoTxid = '9bf266a300e2e4e2a5bc3882273cbc5a53155d0e82143f0cffd49140982e4b98';
+    const littleIndianTxid = convertEndian(utxoTxid);
+    const utxoVout = '00000000';
+    const scriptSigLength = '00';
+    const scriptSig = '';
+    const sequence = 'ffffffff'
+
+    // output parameters
+    const outputCount = '01';
+    const outputAmount = satoshiToLEHex(320000);
+    // add concatenate scriptpubkey too
+    const scriptPubKeyLength = (scriptPubKey.length).toString(16);
+    const lockTime = '00000000';
+
+    const recipient = '2Mt8sqHMvQAeHNbgLRtwG7CzGM8QmEE4WZH';
+
+    // TODO: build and sign the transaction
+}
+
+
 const scriptPubKey = createP2shScriptPubKey('427472757374204275696c64657273');
 const p2shAddress = createP2shAddress('427472757374204275696c64657273');
 
-console.log(scriptPubKey);
-console.log(p2shAddress);
-
+console.log('scriptPubKey', scriptPubKey);
+console.log('p2shAddress', p2shAddress);
